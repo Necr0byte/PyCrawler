@@ -1,7 +1,8 @@
 from datetime import datetime, timedelta
 import time, requests, pandas, lxml, sys
 from lxml import html
-
+import warnings
+warnings.simplefilter(action='ignore', category=FutureWarning)
 
 def format_date(date_datetime):
     date_timetuple = date_datetime.timetuple()
