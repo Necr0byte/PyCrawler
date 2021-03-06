@@ -1,0 +1,8 @@
+pandas
+datetime
+lxml
+gspread
+requests
+oauth2client
+openpyxl
+subprocess

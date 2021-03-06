@@ -53,7 +53,8 @@ def clean_dividends(symbol, dividends):
     dividends = dividends.set_index('Date')
     dividends = dividends['Dividends']
     dividends = dividends.str.replace(r'\Dividend', '')
-    dividends = dividends.astype(float)
+    #re.sub("[^\d\.]", "", dividends)  # Acá hay que sacar todos los caracteres no-numéricos de dividends
+    #dividends = dividends.astype(float)  # Sino la conversión a Float falla
     dividends.name = symbol
     return dividends
 
