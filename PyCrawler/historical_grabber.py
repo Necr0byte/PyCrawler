@@ -50,14 +50,25 @@ def scrape_page(url, header):
 
 def clean_dividends(symbol, dividends):
     index = len(dividends)
+    dividends.name = symbol
     dividends = dividends.drop(index-1)
-    dividends = dividends.set_index('Date')
+    dividends = dividends.set_index('Date')    
     dividends = dividends['Dividends']
-    dividends = dividends.str.replace(r'\Dividend', '')
+    div_ret = dividends.str
+    div_ret = div_ret.strip()
+    # dividends = dividends.str.replace(r'\Dividend', '')
+    # dividends = dividends.str.replace(r'\n','')
+    # dividends = dividends.str.replace(r'\r','')
+    # dividends = dividends.str.replace(r'b','')
+    # dividends = dividends.str.replace(r'\b','')
+    # dividends = dividends.str.replace(r'\'','')
+    # dividends = dividends.str.replace(r' ','')
+    # dividends = dividends.str.replace(r'Nos','')
+    # dividends = dividends.str.strip()
     #re.sub("[^\d\.]", "", dividends)  # Acá hay que sacar todos los caracteres no-numéricos de dividends
     #dividends = dividends.astype(float)  # Sino la conversión a Float falla
-    dividends.name = symbol
-    return dividends
+    
+    return div_ret
 
 
 if __name__ == '__main__':
@@ -89,6 +100,7 @@ if __name__ == '__main__':
     clean_div = clean_dividends(symbol, dividends[0])
 
     try:
+        #print("clean_div[-1]:")
         print(clean_div[-1])
     except:
         print('0')
