@@ -18,9 +18,13 @@ def subdomain(symbol, start, end, what):
     else:
         if (what == "price"):
             tail_url = "&interval=div%7Csplit&filter=history&frequency=1d"
-        else:
-            print ("wrong \"what\".")
-            return 1
+        else: 
+            if (what == "stats"):
+                tail_url = "/key-statistics?p="
+                return (symbol + tail_url + symbol)
+            else:
+                print ("wrong \"what\".")
+                exit(1)
     subdomain = format_url.format(symbol, start, end) + tail_url
     return subdomain
 
@@ -44,6 +48,7 @@ def header(subdomain):
     return hdrs
 
 def scrape_page(url, header):
+    #print ("scrape:", url)
     page = requests.get(url, headers=header)
     element_html = html.fromstring(page.content)
     table = element_html.xpath('//table')
@@ -98,7 +103,12 @@ if __name__ == '__main__':
                 print(price)
             except:
                 print('1')
-
         else:
-            print("must be either \"price\" or \"div\".")
-            exit(1)
+            if (info == "stats"): 
+                try:
+                    print(scrape[0].iloc[0].iloc[1]) #son 8 en total. Iterar.
+                except:
+                    print ("error")
+            else:
+                print("must be either \"price\", \"stats\" or \"div\".")
+                exit(1)

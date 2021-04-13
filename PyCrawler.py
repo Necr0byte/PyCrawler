@@ -1,5 +1,5 @@
 import gspread, os, openpyxl, subprocess
-from openpyxl import *
+#from openpyxl import *
 from oauth2client.service_account import ServiceAccountCredentials
 
 #variables globales:
@@ -17,7 +17,6 @@ client = gspread.authorize(creds)
 database = openpyxl.Workbook()
 database.create_sheet(index = 0 , title = "CEDEARs")
 cedears = database.active
-#database.save("C:\\Users\\Magnus\\VCS\\PyCrawler\\Stocks.xlsx")
 
 def spreadsheets(task, col, row, data):
     rowcol=row+str(col+1)
@@ -62,13 +61,18 @@ while (pending_list):
     for i in pending_list:
         d = float(get_div(i))
         p = float(get_price(i))
+        # for j in (0, 8):
+        #     s[j] = get_stats(i)
         y = round(d/p, 4)
-        ix = stocks.index(i)
+        ix = stocks.index(i) +1
         # print ("price for", i, "is", p)
         # print ("dividend for", i, "is", d)
         # print ("yield for", i, "is", y)
+        # market cap
         spreadsheets('put', ix, 'A', i)
         spreadsheets('put', ix, 'B', p)
         spreadsheets('put', ix, 'C', d)
         spreadsheets('put', ix, 'D', y)
+        # for j in (0,8):  <-- Acá cargar los datos de métricas para análisis de valor
+        #     spreadsheets('put', ix, j, s[j])
         pending_list.remove(i)
