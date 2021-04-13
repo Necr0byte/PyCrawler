@@ -102,24 +102,3 @@ if __name__ == '__main__':
         else:
             print("must be either \"price\" or \"div\".")
             exit(1)
-
-    # try:
-    #     for i in range (1,10):     
-    #         d = dividends[0]
-    #         e = d.iloc[i]
-    #         divi = e.iloc[1].replace('Dividend', '').strip()
-    #         date = e.iloc[0].split()
-    #         year = date[2]
-    #         if (year == "2020"):
-    #             times += 1
-    #             pay += float(divi)
-    #         i += 1
-    #     print("paid", times, "times in 2020.")
-    #     print("paid $", pay, "in 2020.")
-    #     price = float(history[0].iloc[0].loc['Open'])
-    #     print("Price:", price)
-    #     yiel = (pay/price)*100
-    #     print("Yield is:", round(yiel, 4), "%")
-
-    # except:
-    #     print('Error')

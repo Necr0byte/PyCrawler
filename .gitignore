@@ -250,5 +250,8 @@ secret.json
 Stocks.xlsx
 *.json
 *secret.json
-
+*.xlsx#
+.~lock.*
+*.git
 __pycache__
+.gitattributes
