@@ -249,3 +249,6 @@ PyCrawler/secret.json
 secret.json
 Stocks.xlsx
 *.json
+*secret.json
+
+__pycache__
