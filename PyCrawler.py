@@ -1,5 +1,5 @@
 import gspread, os, openpyxl, subprocess
-#from openpyxl import *
+from datetime import date
 from oauth2client.service_account import ServiceAccountCredentials
 
 #variables globales:
@@ -57,22 +57,53 @@ def get_price(ticker):
     except:
         return 1
 
+def get_stats(ticker):
+    grabber = 'python historical_grabber.py ' + ticker + " stats"
+    try:
+        price = subprocess.check_output(grabber)
+        #price = price.strip()
+        return price.decode().strip()
+    except:
+        return ("N/A")
+
+#initialize spreadsheet
+spreadsheets('put', 0, 'A', "Ticker")
+spreadsheets('put', 0, 'B', "Price")
+spreadsheets('put', 0, 'C', "Dividend")
+spreadsheets('put', 0, 'D', "Yield")
+
+spreadsheets('put', 0, 'F', "Market Cap (intraday)")
+spreadsheets('put', 0, 'G', "Enterprise Value")
+spreadsheets('put', 0, 'H', "Forward P/E")
+spreadsheets('put', 0, 'I', "PEG Ratio (5 yr expected)")
+spreadsheets('put', 0, 'J', "Price/Sales")
+spreadsheets('put', 0, 'K', "Price/Book")
+spreadsheets('put', 0, 'L', "Enterprise Value/Revenue")
+spreadsheets('put', 0, 'M', "Enterprise Value/EBITDA")
+
+spreadsheets('put', 0, 'O', "Updated on")
+
 while (pending_list):
     for i in pending_list:
         d = float(get_div(i))
         p = float(get_price(i))
-        # for j in (0, 8):
-        #     s[j] = get_stats(i)
+        s = get_stats(i)
+        s = s.split("\n")
         y = round(d/p, 4)
         ix = stocks.index(i) +1
-        # print ("price for", i, "is", p)
-        # print ("dividend for", i, "is", d)
-        # print ("yield for", i, "is", y)
-        # market cap
+
         spreadsheets('put', ix, 'A', i)
         spreadsheets('put', ix, 'B', p)
         spreadsheets('put', ix, 'C', d)
         spreadsheets('put', ix, 'D', y)
-        # for j in (0,8):  <-- Acá cargar los datos de métricas para análisis de valor
-        #     spreadsheets('put', ix, j, s[j])
+
+
+
+        cols = ['F','G','H','I','J','K','L','M']
+        for c in cols:
+            try:
+                spreadsheets('put', ix, c, s[cols.index(c)].strip())
+            except:
+                spreadsheets('put', ix, c, "N/A")
         pending_list.remove(i)
+        spreadsheets('put', 0, 'O', date.today)

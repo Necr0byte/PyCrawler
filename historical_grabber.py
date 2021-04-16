@@ -106,7 +106,8 @@ if __name__ == '__main__':
         else:
             if (info == "stats"): 
                 try:
-                    print(scrape[0].iloc[0].iloc[1]) #son 8 en total. Iterar.
+                    for i in range (0, 8):
+                        print(scrape[0].iloc[i].iloc[1]) #son 8 en total. Iterar.
                 except:
                     print ("error")
             else:

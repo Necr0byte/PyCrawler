@@ -247,10 +247,10 @@ ModelManifest.xml
 #dependencies of the program
 PyCrawler/secret.json
 secret.json
-Stocks.xlsx
 *.json
 *secret.json
 *.xlsx#
+*.xlsx
 .~lock.*
 *.git
 __pycache__
