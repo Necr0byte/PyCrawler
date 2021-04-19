@@ -106,4 +106,4 @@ while (pending_list):
             except:
                 spreadsheets('put', ix, c, "N/A")
         pending_list.remove(i)
-        spreadsheets('put', 0, 'O', date.today)
+        spreadsheets('put', ix, 'O', date.today())

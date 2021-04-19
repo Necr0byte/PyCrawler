@@ -106,7 +106,7 @@ if __name__ == '__main__':
         else:
             if (info == "stats"): 
                 try:
-                    for i in range (0, 8):
+                    for i in range (0, 8): #Pensar cómo sacar los otros campos
                         print(scrape[0].iloc[i].iloc[1]) #son 8 en total. Iterar.
                 except:
                     print ("error")
