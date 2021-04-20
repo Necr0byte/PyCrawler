@@ -23,8 +23,13 @@ def subdomain(symbol, start, end, what):
                 tail_url = "/key-statistics?p="
                 return (symbol + tail_url + symbol)
             else:
-                print ("wrong \"what\".")
-                exit(1)
+                if (what == "general"):
+                    tail_url = "?p="
+                    aux = "/html/body/div[1]/div/div/div[1]/div/div[3]/div[1]/div/div[1]/div/div[2]/div[2]/table/tbody"
+                    return (symbol + tail_url + symbol + aux)
+                else:
+                    print ("wrong \"what\".")
+                    exit(1)
     subdomain = format_url.format(symbol, start, end) + tail_url
     return subdomain
 
@@ -47,12 +52,11 @@ def header(subdomain):
             "user-agent": "Mozilla/5.0"}
     return hdrs
 
-def scrape_page(url, header):
-    #print ("scrape:", url)
+def scrape_page(url, header, tabl_num):
     page = requests.get(url, headers=header)
     element_html = html.fromstring(page.content)
     table = element_html.xpath('//table')
-    table_tree = lxml.etree.tostring(table[0], method='xml')
+    table_tree = lxml.etree.tostring(table[tabl_num], method='xml')
     panda = pandas.read_html(table_tree)
     return panda
 
@@ -71,19 +75,21 @@ if __name__ == '__main__':
     #properly format the date to epoch time
     start = format_date(start)
     end = format_date(end)
-    what = info
+    what = info #We could get rid of this
     sub = subdomain(symbol, start, end, what)
     hdrs = header(sub)    
     base_url = "https://finance.yahoo.com/quote/"
     url = base_url + sub
-    scrape = scrape_page(url, hdrs)
+#    scrape = scrape_page(url, hdrs, 0)
 
     pay = 0
     times = 0
     yiel = 0
-    d = scrape[0]
+    
 
     if (info == "div"):
+        scrape = scrape_page(url, hdrs, 0)
+        d = scrape[0]
         try:
             for i in range (1,10):
                 e = d.iloc[i]
@@ -98,6 +104,7 @@ if __name__ == '__main__':
         
     else:
         if (info == "price"):
+            scrape = scrape_page(url, hdrs, 0)
             try:
                 price = float(scrape[0].iloc[0].loc['Open'])
                 print(price)
@@ -105,11 +112,28 @@ if __name__ == '__main__':
                 print('1')
         else:
             if (info == "stats"): 
-                try:
-                    for i in range (0, 8): #Pensar cómo sacar los otros campos
-                        print(scrape[0].iloc[i].iloc[1]) #son 8 en total. Iterar.
-                except:
-                    print ("error")
-            else:
-                print("must be either \"price\", \"stats\" or \"div\".")
-                exit(1)
+                for j in range (0, 8):
+                    scrape = scrape_page(url, hdrs, j)
+                    try:
+                        for i in range (0, 15): 
+                            print(scrape[0].iloc[i].iloc[1])
+                    except:
+                        continue
+                        #print ()
+            else:                
+                if (info == "general"):                    
+                    try:
+                        for k in range (0, 2):
+                            scrape = scrape_page(url, hdrs, k)
+                            for j in range (0, 8):
+                                for i in range (0, 2):
+                                    try:
+                                        print("printing i, j: ", i, j, scrape[0].iloc[j].iloc[i]) 
+                                    except: 
+                                        continue
+                                        #print()
+                    except:    
+                        print("error")
+                else: 
+                    print("must be either \"price\", \"stats\", \"div\" or \"general\".")
+                    exit(1)
