@@ -112,9 +112,9 @@ if __name__ == '__main__':
                 print('1')
         else:
             if (info == "stats"): 
-                for j in range (0, 8):
-                    scrape = scrape_page(url, hdrs, j)
+                for j in range (0, 8):                   
                     try:
+                        scrape = scrape_page(url, hdrs, j)
                         for i in range (0, 15): 
                             print(scrape[0].iloc[i].iloc[1])
                     except:

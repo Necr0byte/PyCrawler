@@ -5,4 +5,3 @@ gspread
 requests
 oauth2client
 openpyxl
-subprocess
